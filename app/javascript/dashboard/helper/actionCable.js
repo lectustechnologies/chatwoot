@@ -122,6 +122,7 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   fetchConversationStats = () => {
     bus.$emit('fetch_conversation_stats');
+    bus.$emit('fetch_overview_reports');
   };
 
   onContactDelete = data => {

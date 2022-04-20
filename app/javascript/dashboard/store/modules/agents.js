@@ -22,6 +22,22 @@ export const getters = {
   getUIFlags($state) {
     return $state.uiFlags;
   },
+  getAgentStatus($state) {
+    let status = {
+      online: $state.records.filter(
+        agent => agent.availability_status === 'online'
+      ).length,
+      busy: $state.records.filter(agent => agent.availability_status === 'busy')
+        .length,
+      offline: $state.records.filter(
+        agent => agent.availability_status === 'offline'
+      ).length,
+    };
+    return status;
+  },
+  getAgentsCount($state) {
+    return $state.records.length;
+  },
 };
 
 export const actions = {
