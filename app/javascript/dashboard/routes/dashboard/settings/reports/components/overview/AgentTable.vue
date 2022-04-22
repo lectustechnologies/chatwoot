@@ -86,7 +86,7 @@ export default {
           ),
           fixed: 'left',
           align: 'left',
-          width: 20,
+          width: 25,
           renderBodyCell: ({ row }) => (
             <div class="row-user-block">
               <Thumbnail
@@ -109,22 +109,13 @@ export default {
             'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.TOTAL'
           ),
           align: 'left',
-          width: 15,
+          width: 10,
         },
         {
           field: 'unattended',
           key: 'unattended',
           title: this.$t(
             'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.UNATTENDED'
-          ),
-          align: 'left',
-          width: 15,
-        },
-        {
-          field: 'status',
-          key: 'status',
-          title: this.$t(
-            'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.STATUS'
           ),
           align: 'left',
           width: 10,
@@ -155,7 +146,7 @@ export default {
       }
 
       td.ve-table-body-td {
-        padding: var(--space-small) var(--space-two) !important;
+        padding: var(--space-one) var(--space-two) !important;
       }
     }
   }
@@ -190,10 +181,6 @@ export default {
     .user-thumbnail-box {
       margin-right: var(--space-small);
     }
-  }
-
-  .emoji-response {
-    font-size: var(--font-size-large);
   }
 
   .table-pagination {

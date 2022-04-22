@@ -7,16 +7,7 @@
       </span>
     </div>
     <div v-if="!isLoading" class="card-body row">
-      <div
-        v-for="(metric, name, index) in metrics"
-        :key="index"
-        class="metric-content column"
-      >
-        <h3 class="heading">
-          {{ name }}
-        </h3>
-        <p class="metric">{{ metric }}</p>
-      </div>
+      <slot></slot>
     </div>
     <div v-else-if="isLoading" class="conversation-metric-loader">
       <spinner />
@@ -37,10 +28,6 @@ export default {
       type: String,
       default: '',
     },
-    metrics: {
-      type: Object,
-      default: () => {},
-    },
     isLoading: {
       type: Boolean,
       default: false,
@@ -53,10 +40,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.card {
+  margin: var(--space-small) !important;
+}
 .card-header {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: var(--space-medium);
 
   h5 {
     margin-bottom: var(--zero);
@@ -83,11 +74,8 @@ export default {
   }
 }
 .card-body {
-  margin-top: var(--space-slab);
-
   .metric-content {
-    padding-top: var(--space-normal);
-    padding-bottom: var(--space-normal);
+    padding-bottom: var(--space-small);
     .heading {
       font-size: var(--font-size-default);
     }
@@ -105,6 +93,6 @@ export default {
   display: flex;
   font-size: var(--font-size-default);
   justify-content: center;
-  padding: var(--space-larger);
+  padding: var(--space-large);
 }
 </style>

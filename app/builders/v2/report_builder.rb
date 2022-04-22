@@ -88,7 +88,7 @@ class V2::ReportBuilder
         name: @user.name,
         email: @user.email,
         thumbnail: @user.avatar_url,
-        availability: account_user.availability,
+        availability: account_user.availability_status,
         metric: conversations
       }
     end

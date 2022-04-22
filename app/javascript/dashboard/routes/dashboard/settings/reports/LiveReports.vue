@@ -4,37 +4,50 @@
       <div class="column small-12 medium-8 conversation-metric">
         <metric-card
           :header="this.$t('OVERVIEW_REPORTS.ACCOUNT_CONVERSATIONS.HEADER')"
-          :metrics="conversationMetrics"
           :is-loading="uiFlags.isFetchingAccountConversationMetric"
           :loading-message="
             $t('OVERVIEW_REPORTS.ACCOUNT_CONVERSATIONS.LOADING_MESSAGE')
           "
-        />
+        >
+          <div
+            v-for="(metric, name, index) in conversationMetrics"
+            :key="index"
+            class="metric-content column"
+          >
+            <h3 class="heading">
+              {{ name }}
+            </h3>
+            <p class="metric">{{ metric }}</p>
+          </div>
+        </metric-card>
       </div>
       <div class="column small-12 medium-4">
-        <metric-card
-          :header="this.$t('OVERVIEW_REPORTS.AGENT_STATUS.HEADER')"
-          :metrics="agentStatusMetrics"
-        />
+        <metric-card :header="this.$t('OVERVIEW_REPORTS.AGENT_STATUS.HEADER')">
+          <div
+            v-for="(metric, name, index) in agentStatusMetrics"
+            :key="index"
+            class="metric-content column"
+          >
+            <h3 class="heading">
+              {{ name }}
+            </h3>
+            <p class="metric">{{ metric }}</p>
+          </div>
+        </metric-card>
       </div>
     </div>
     <div class="row">
-      <div class="card">
-        <div class="card-header">
-          <h5>
-            {{ this.$t('OVERVIEW_REPORTS.AGENT_CONVERSATIONS.HEADER') }}
-          </h5>
-        </div>
-        <div class="card-body">
-          <agent-table
-            :total-agents="agentsCount"
-            :agent-metrics="agentConversationMetric"
-            :page-index="pageIndex"
-            :is-loading="uiFlags.isFetchingAgentConversationMetric"
-            @page-change="onPageNumberChange"
-          />
-        </div>
-      </div>
+      <metric-card
+        :header="this.$t('OVERVIEW_REPORTS.AGENT_CONVERSATIONS.HEADER')"
+      >
+        <agent-table
+          :total-agents="agentsCount"
+          :agent-metrics="agentConversationMetric"
+          :page-index="pageIndex"
+          :is-loading="uiFlags.isFetchingAgentConversationMetric"
+          @page-change="onPageNumberChange"
+        />
+      </metric-card>
     </div>
   </div>
 </template>
@@ -114,11 +127,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.card {
-  margin: var(--space-small) !important;
-}
-.card-header {
-  margin-bottom: var(--space-normal);
-}
-</style>
