@@ -74,9 +74,10 @@ export const actions = {
     }
   },
 
-  updatePresence: async ({ commit }, data) => {
+  updatePresence: async ({ commit, dispatch }, data) => {
     commit(types.default.SET_AGENT_UPDATING_STATUS, true);
     commit(types.default.UPDATE_AGENTS_PRESENCE, data);
+    dispatch('updateReportAgentStatus', data, { root: true });
     commit(types.default.SET_AGENT_UPDATING_STATUS, false);
   },
 

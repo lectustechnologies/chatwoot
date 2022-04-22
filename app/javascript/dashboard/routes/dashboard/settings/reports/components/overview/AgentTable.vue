@@ -29,12 +29,10 @@
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway';
 import { VeTable, VePagination } from 'vue-easytable';
-
 import Spinner from 'shared/components/Spinner.vue';
 import EmptyState from 'dashboard/components/widgets/EmptyState.vue';
-import timeMixin from 'dashboard/mixins/time';
+import Thumbnail from 'dashboard/components/widgets/Thumbnail.vue';
 
 export default {
   name: 'AgentTable',
@@ -44,7 +42,6 @@ export default {
     VeTable,
     VePagination,
   },
-  mixins: [clickaway, timeMixin],
   props: {
     totalAgents: {
       type: Number,
@@ -70,10 +67,12 @@ export default {
     tableData() {
       return this.agentMetrics.map(agent => {
         return {
-          agent: agent.user.name || '---',
+          agent: agent.name,
+          email: agent.email,
+          thumbnail: agent.thumbnail,
           total: agent.metric.total || 0,
           unattended: agent.metric.unattended || 0,
-          status: agent.user.availability,
+          status: agent.availability,
         };
       });
     },
@@ -82,29 +81,51 @@ export default {
         {
           field: 'agent',
           key: 'agent',
-          title: 'Agent',
+          title: this.$t(
+            'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.AGENT'
+          ),
           fixed: 'left',
           align: 'left',
           width: 20,
+          renderBodyCell: ({ row }) => (
+            <div class="row-user-block">
+              <Thumbnail
+                src={row.thumbnail}
+                size="32px"
+                username={row.agent}
+                status={row.status}
+              />
+              <div class="user-block">
+                <h6 class="title text-truncate">{row.agent}</h6>
+                <span class="sub-title">{row.email}</span>
+              </div>
+            </div>
+          ),
         },
         {
           field: 'total',
           key: 'total',
-          title: 'Total',
+          title: this.$t(
+            'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.TOTAL'
+          ),
           align: 'left',
           width: 15,
         },
         {
           field: 'unattended',
           key: 'unattended',
-          title: 'Unattended',
+          title: this.$t(
+            'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.UNATTENDED'
+          ),
           align: 'left',
           width: 15,
         },
         {
           field: 'status',
           key: 'status',
-          title: 'Status',
+          title: this.$t(
+            'OVERVIEW_REPORTS.AGENT_CONVERSATIONS.TABLE_HEADER.STATUS'
+          ),
           align: 'left',
           width: 10,
         },
@@ -145,6 +166,30 @@ export default {
 
   &::v-deep .ve-pagination-select {
     display: none;
+  }
+
+  .row-user-block {
+    align-items: center;
+    display: flex;
+    text-align: left;
+
+    .user-block {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      .title {
+        font-size: var(--font-size-small);
+        margin: var(--zero);
+        line-height: 1;
+      }
+      .sub-title {
+        font-size: var(--font-size-mini);
+      }
+    }
+
+    .user-thumbnail-box {
+      margin-right: var(--space-small);
+    }
   }
 
   .emoji-response {

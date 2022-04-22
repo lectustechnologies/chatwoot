@@ -4,6 +4,7 @@ class V2::ReportBuilder
   attr_reader :account, :params
 
   DEFAULT_GROUP_BY = 'day'.freeze
+  AGENT_RESULTS_PER_PAGE = 10
 
   def initialize(account, params)
     @account = account
@@ -79,12 +80,15 @@ class V2::ReportBuilder
   end
 
   def agent_metrics
-    account_users = @account.account_users
-    account_users = account_users.where(user_id: params[:user_id]) if params[:user_id].present?
+    account_users = @account.account_users.page(params[:page]).per(AGENT_RESULTS_PER_PAGE)
     account_users.each_with_object([]) do |account_user, arr|
       @user = account_user.user
       arr << {
-        user: { id: @user.id, name: @user.name, thumbnail: @user.avatar_url, availability: account_user.availability },
+        id: @user.id,
+        name: @user.name,
+        email: @user.email,
+        thumbnail: @user.avatar_url,
+        availability: account_user.availability,
         metric: conversations
       }
     end

@@ -1,41 +1,37 @@
 <template>
   <div class="column content-box">
     <div class="row">
-      <div class="column small-12 medium-8 card-content-column">
-        <div class="row">
-          <metric-card
-            :header="this.$t('OVERVIEW_REPORTS.ACCOUNT_CONVERSATIONS.HEADER')"
-            :metrics="conversationMetrics"
-            :is-loading="uiFlags.isFetchingAccountConversationMetric"
-            :loading-message="
-              $t('OVERVIEW_REPORTS.ACCOUNT_CONVERSATIONS.LOADING_MESSAGE')
-            "
-          />
-        </div>
-        <div class="row">
-          <div class="card">
-            <div class="card-header">
-              <h5>
-                {{ this.$t('OVERVIEW_REPORTS.AGENT_CONVERSATIONS.HEADER') }}
-              </h5>
-            </div>
-            <div class="card-body">
-              <agent-table
-                :total-agents="agentsCount"
-                :agent-metrics="agentConversationMetric"
-                :page-index="pageIndex"
-                :is-loading="uiFlags.isFetchingAgentConversationMetric"
-                @page-change="onPageNumberChange"
-              />
-            </div>
-          </div>
-        </div>
+      <div class="column small-12 medium-8 conversation-metric">
+        <metric-card
+          :header="this.$t('OVERVIEW_REPORTS.ACCOUNT_CONVERSATIONS.HEADER')"
+          :metrics="conversationMetrics"
+          :is-loading="uiFlags.isFetchingAccountConversationMetric"
+          :loading-message="
+            $t('OVERVIEW_REPORTS.ACCOUNT_CONVERSATIONS.LOADING_MESSAGE')
+          "
+        />
       </div>
-      <div class="column small-12 medium-4 card-content-column">
-        <div class="row">
-          <metric-card
-            :header="this.$t('OVERVIEW_REPORTS.AGENT_STATUS.HEADER')"
-            :metrics="agentStatusMetrics"
+      <div class="column small-12 medium-4">
+        <metric-card
+          :header="this.$t('OVERVIEW_REPORTS.AGENT_STATUS.HEADER')"
+          :metrics="agentStatusMetrics"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            {{ this.$t('OVERVIEW_REPORTS.AGENT_CONVERSATIONS.HEADER') }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <agent-table
+            :total-agents="agentsCount"
+            :agent-metrics="agentConversationMetric"
+            :page-index="pageIndex"
+            :is-loading="uiFlags.isFetchingAgentConversationMetric"
+            @page-change="onPageNumberChange"
           />
         </div>
       </div>
@@ -92,7 +88,7 @@ export default {
     this.fetchAllData();
 
     bus.$on('fetch_overview_reports', () => {
-      this.fetchAccountConversationMetric();
+      this.fetchAllData();
     });
   },
   methods: {
@@ -108,6 +104,7 @@ export default {
     fetchAgentConversationMetric() {
       this.$store.dispatch('fetchAgentConversationMetric', {
         type: 'agent',
+        page: this.pageIndex,
       });
     },
     onPageNumberChange(pageIndex) {
@@ -118,8 +115,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.card-content-column {
-  padding: var(--space-smaller);
+.card {
+  margin: var(--space-small) !important;
 }
 .card-header {
   margin-bottom: var(--space-normal);

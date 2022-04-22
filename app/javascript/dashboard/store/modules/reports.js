@@ -3,6 +3,7 @@
 /* eslint no-shadow: 0 */
 import * as types from '../mutation-types';
 import Report from '../../api/reports';
+import Vue from 'vue';
 
 import { downloadCsvFile } from '../../helper/downloadCsvFile';
 
@@ -103,7 +104,7 @@ export const actions = {
   },
   fetchAgentConversationMetric({ commit }, reportObj) {
     commit(types.default.TOGGLE_AGENT_CONVERSATION_METRIC_LOADING, true);
-    Report.getConversationMetric(reportObj.type)
+    Report.getConversationMetric(reportObj.type, reportObj.page)
       .then(agentConversationMetric => {
         commit(
           types.default.SET_AGENT_CONVERSATION_METRIC,
@@ -114,6 +115,9 @@ export const actions = {
       .catch(() => {
         commit(types.default.TOGGLE_AGENT_CONVERSATION_METRIC_LOADING, false);
       });
+  },
+  updateReportAgentStatus({ commit }, data) {
+    commit(types.default.UPDATE_REPORT_AGENTS_STATUS, data);
   },
   downloadAgentReports(_, reportObj) {
     return Report.getAgentReports(reportObj.from, reportObj.to)
@@ -174,6 +178,16 @@ const mutations = {
   },
   [types.default.TOGGLE_AGENT_CONVERSATION_METRIC_LOADING](_state, flag) {
     _state.overview.uiFlags.isFetchingAgentConversationMetric = flag;
+  },
+  [types.default.UPDATE_REPORT_AGENTS_STATUS](_state, data) {
+    _state.overview.agentConversationMetric.forEach((element, index) => {
+      const availabilityStatus = data[element.id];
+      Vue.set(
+        _state.overview.agentConversationMetric[index],
+        'availability',
+        availabilityStatus || 'offline'
+      );
+    });
   },
 };
 

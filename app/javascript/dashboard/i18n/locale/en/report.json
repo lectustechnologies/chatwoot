@@ -395,7 +395,13 @@
     "AGENT_CONVERSATIONS": {
       "HEADER": "Conversations by agents",
       "LOADING_MESSAGE": "Agents Loading...",
-      "NO_AGENTS": "There are no conversations by agents"
+      "NO_AGENTS": "There are no conversations by agents",
+      "TABLE_HEADER": {
+        "AGENT": "Agent",
+        "TOTAL": "Total",
+        "UNATTENDED": "Unattended",
+        "STATUS": "Status"
+      }
     },
     "AGENT_STATUS": {
       "HEADER": "Agent status",

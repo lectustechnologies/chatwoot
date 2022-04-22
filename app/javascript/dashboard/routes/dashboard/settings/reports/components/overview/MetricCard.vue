@@ -105,6 +105,6 @@ export default {
   display: flex;
   font-size: var(--font-size-default);
   justify-content: center;
-  padding: var(--space-large);
+  padding: var(--space-larger);
 }
 </style>
